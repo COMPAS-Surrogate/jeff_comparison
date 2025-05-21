@@ -3,8 +3,9 @@ import sys
 from jeff_data import JeffRateMatrix
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
-COMPAS_H5 = sys.argv[1]
+
 
 jeff_matrix = JeffRateMatrix.load()
 
@@ -34,18 +35,26 @@ def plot(ax, rate2d, z_edges, mc_edges):
     )
 
 
-grid  = McZGrid.from_compas_output(
-    compas_path=COMPAS_H5,
-    cosmological_parameters={
-        "aSF": 0.012,
-        "dSF": 4.253,
-        "mu_z": -0.325,
-        "sigma_0": 0.213,
-    },
-)
+grid_fname = 'mcz_grid.h5'
+if os.path.exists(grid_fname):
+    print(f"Loading McZ grid from {grid_fname}")
+    grid = McZGrid.from_h5(grid_fname)
+else:
+    COMPAS_H5 = sys.argv[1]
+    grid  = McZGrid.from_compas_output(
+        compas_path=COMPAS_H5,
+        cosmological_parameters={
+            "aSF": 0.012,
+            "dSF": 4.253,
+            "mu_z": -0.325,
+            "sigma_0": 0.213,
+        },
+    )
+    grid.save("mcz_grid.h5")
+
 grid.bin_data(
-    mc_bins=JeffRateMatrix.Mc_edges,
-    z_bins=JeffRateMatrix.z_edges,
+    mc_bins=jeff_matrix.Mc_edges,
+    z_bins=jeff_matrix.z_edges,
 )
 
 fig, ax = plt.subplots(1, 2, figsize=(12, 6))
