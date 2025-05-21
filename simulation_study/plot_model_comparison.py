@@ -53,6 +53,11 @@ else:
     )
     grid.save("mcz_grid.h5")
 
+    # normal binning
+    binned = grid.bin_data()
+    fig = binned.plot()
+    fig.savefig("mcz_grid.png")
+
 grid.bin_data(
     mc_bins=jeff_matrix.Mc_edges,
     z_bins=jeff_matrix.z_edges,
