@@ -63,7 +63,7 @@ plot(ax[1], jeff_matrix.data, jeff_matrix.z_edges, jeff_matrix.Mc_edges)
 ax[0].set_title("Avi")
 ax[1].set_title("Jeff")
 plt.tight_layout()
-plt.show()
+plt.savefig("comparison.png")
 
 
 
