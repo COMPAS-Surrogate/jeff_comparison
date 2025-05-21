@@ -49,6 +49,7 @@ else:
             "mu_z": -0.325,
             "sigma_0": 0.213,
         },
+        max_detectable_redshift=1.4
     )
     grid.save("mcz_grid.h5")
 
